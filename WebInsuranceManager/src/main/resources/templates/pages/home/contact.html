@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}"></head>
+<body>
+<header th:replace="~{fragments/layout.html :: header}"></header>
+
+<main class="main">
+
+    <div class="justify-content-md-center py-1">
+        <div class="alert alert-success d-flex justify-content-center" role="alert" th:text="${success}" th:if="${success}"></div>
+        <div class="alert alert-danger d-flex justify-content-center" role="alert" th:text="${error}" th:if="${error}"></div>
+    </div>
+    <!-- Contact Section -->
+    <section id="contact" class="contact section py-5">
+
+        <div class="container" data-aos="fade-up" data-aos-delay="100">
+            <div class="row gy-4 justify-content-center text-center mb-5">
+                <!-- Address Section -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="info-item p-4 bg-light border rounded-3 shadow-sm" data-aos="fade-up" data-aos-delay="200">
+                        <i class="bi bi-geo-alt fs-1 text-primary mb-3"></i>
+                        <h3 class="h5">Address</h3>
+                        <p class="mb-0">Argentinska street, Prague, 170 00</p>
+                    </div>
+                </div><!-- End Address Item -->
+
+                <!-- Phone Section -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="info-item p-4 bg-light border rounded-3 shadow-sm" data-aos="fade-up" data-aos-delay="300">
+                        <i class="bi bi-telephone fs-1 text-primary mb-3"></i>
+                        <h3 class="h5">Call Us</h3>
+                        <p class="mb-0">+420 774 672 849</p>
+                    </div>
+                </div><!-- End Call Us Item -->
+
+                <!-- Email Section -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="info-item p-4 bg-light border rounded-3 shadow-sm" data-aos="fade-up" data-aos-delay="400">
+                        <i class="bi bi-envelope fs-1 text-primary mb-3"></i>
+                        <h3 class="h5">Email Us</h3>
+                        <p class="mb-0">info@webinsurance.com</p>
+                    </div>
+                </div><!-- End Email Item -->
+            </div>
+
+            <div class="row gy-4 mt-4">
+                <!-- Google Maps -->
+                <div class="col-lg-6">
+                    <div class="border rounded-3 overflow-hidden shadow-sm" data-aos="fade-up" data-aos-delay="300">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d1305.3166745273418!2d14.444408321072281!3d50.10108862758572!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e2!4m0!4m3!3m2!1d50.101493013097006!2d14.443801146053017!5e1!3m2!1sen!2scz!4v1724421234117!5m2!1sen!2scz" frameborder="0" style="border:0; width: 100%; height: 400px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div><!-- End Google Maps -->
+
+                <!-- Contact Form -->
+                <div class="col-lg-6">
+                    <form th:action="@{/contact/submit}" method="post" th:object="${contactFormDTO}" class="php-email-form p-4 bg-light border rounded-3 shadow-sm" data-aos="fade-up" data-aos-delay="400">
+                        <div class="row gy-4">
+                            <div class="col-md-6">
+                                <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="text" class="form-control" name="subject" placeholder="Subject" required>
+                            </div>
+                            <div class="col-md-12">
+                                <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
+                            </div>
+                            <div class="col-md-12 text-center">
+                                <!-- Display Success Message -->
+                                <div th:if="${successMessage}" class="alert alert-success mb-2" role="alert">
+                                    <span th:text="${successMessage}"></span>
+                                </div>
+
+                                <!-- Display Error Messages -->
+                                <div class="loading mb-2" style="display: none;">Loading...</div>
+                                <div class="error-message mb-2" style="display: none;"></div>
+
+                                <button type="submit" class="btn btn-primary">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
+                </div><!-- End Contact Form -->
+
+            </div>
+        </div>
+    </section><!-- /Contact Section -->
+</main>
+
+
+<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}"></head>
+<body>
+<header th:replace="~{fragments/layout.html :: header}"></header>
+
+<!-- Breadcrumb for navigation -->
+<nav aria-label="breadcrumb">
+    <ol sec:authorize="isAuthenticated()" class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/clients}">My Portal</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/clients/{clientId}/policies/{policyId}(clientId=${clientId}, policyId=${policyId})}">Client Policy Details</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit your claim</li>
+    </ol>
+</nav>
+
+<!-- Success and Error Messages -->
+<div class="justify-content-md-center py-3">
+    <div class="alert alert-success d-flex justify-content-center" role="alert" th:text="${success}" th:if="${success}"></div>
+    <div class="alert alert-success d-flex justify-content-center" role="alert" th:text="${error}" th:if="${error}"></div>
+</div>
+
+<!-- Form container -->
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col">
+            <div class="card card-registration my-4">
+                <div class="row g-0">
+                    <!-- Side image -->
+                    <div class="col-xl-6 d-none d-xl-block">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
+                             alt="Sample photo" class="img-fluid"
+                             style="border-top-left-radius: .25rem; border-bottom-left-radius: .50rem;" />
+                    </div>
+                    <div class="col-xl-6">
+                        <div class="card-body p-md-5 text-black">
+                            <h3 class="mb-5 text-uppercase">Edit your claim</h3>
+
+                            <!-- Policy Start and End Date Information -->
+                            <div class="mb-4">
+                                <p><strong>Policy Start Date:</strong> <span th:text="${policy.policyStartDate}"></span></p>
+                                <p><strong>Policy End Date:</strong> <span th:text="${policy.policyEndDate}"></span></p>
+                            </div>
+
+                            <!-- Edit claim form -->
+                            <form th:action="@{/clients/{clientId}/policies/{policyId}/claims/{claimId}/edit(clientId=${clientId}, policyId=${policyId}, claimId=${claimDTO.claimId})}"
+                                  method="post"
+                                  th:object="${claimDTO}"
+                                  class="needs-validation"
+                                  novalidate>
+
+                                <!-- Claim Date input -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="claimDate">Claim Date</label>
+                                    <input type="date" class="form-control" id="claimDate" th:field="*{claimDate}" required>
+                                    <div th:if="${#fields.hasErrors('claimDate')}" class="alert alert-danger" role="alert">
+                                        <span th:errors="*{claimDate}">Invalid Date</span>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please select a valid start date.
+                                    </div>
+                                </div>
+
+                                <!-- Claim Type input -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="claimType">Claim Type</label>
+                                    <select class="form-control" id="claimType" th:field="*{claimType}" required>
+                                        <option value="" disabled selected>Select claim type</option>
+                                        <option th:each="type : ${T(cz.itnetwork.webinsurance.models.dto.ClaimType).values()}"
+                                                th:value="${type.name()}"
+                                                th:text="${type.claimName}"></option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Please select a claim type.
+                                    </div>
+                                </div>
+
+                                <!-- Claim Description input -->
+                                <div class="form-group col-md-12 mb-4">
+                                    <label for="claimDescription">Claim Description</label>
+                                    <textarea class="form-control" id="claimDescription" rows="10" th:field="*{claimDescription}" required></textarea>
+                                    <div class="invalid-feedback">
+                                        Please describe your claim.
+                                    </div>
+                                </div>
+
+                                <!-- Submit, Reset, and Back buttons -->
+                                <div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Submit Changes</button>
+                                    <button type="reset" class="btn btn-warning btn-sm">Reset</button>
+                                    <a th:href="@{/clients/{clientId}/policies/{policyId}(clientId=${clientId}, policyId=${policyId})}" class="btn btn-secondary btn-sm">Back to Policy</a>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for form validation -->
+<script>
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+
+<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+</body>
+</html>

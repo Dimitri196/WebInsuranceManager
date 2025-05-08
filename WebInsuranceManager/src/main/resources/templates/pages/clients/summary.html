@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}"></head>
+
+<body>
+<header th:replace="~{fragments/layout.html :: header}"></header>
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb">
+    <ol sec:authorize="isAuthenticated()" class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">My Portal</li>
+    </ol>
+</nav>
+
+<!-- Main Content -->
+<div class="container-fluid row justify-content-center">
+
+    <!-- Success and Error Messages -->
+    <div class="justify-content-md-center py-3">
+        <div class="alert alert-success d-flex justify-content-center" role="alert" th:text="${success}" th:if="${success}"></div>
+        <div class="alert alert-danger d-flex justify-content-center" role="alert" th:text="${error}" th:if="${error}"></div>
+    </div>
+
+    <!-- User Details and Action Button -->
+    <div sec:authorize="isAuthenticated()" class="justify-content-center">
+        <h1 class="mx-auto my-0 text-uppercase text-center">My WebInsurance Portal</h1>
+        <p sec:authorize="hasRole('ADMIN')" class="mx-auto my-0 text-danger text-center">"You have administrator permissions to manage all profiles in the WebInsurance customer database."</p>
+
+        <!-- Display User Details -->
+        <div class="user-details text-center py-3" sec:authorize="isAuthenticated()">
+            <p><strong>User Name:</strong> <span th:text="${user.firstName} + ' ' + ${user.lastName}"></span></p>
+            <p><strong>Email:</strong> <span th:text="${user.email}"></span></p>
+        </div>
+
+        <!-- Action Button for Creating New Clients -->
+        <div class="gap-2 d-md-flex justify-content-md-center py-5">
+            <a th:href="@{/clients/create}" class="btn btn-primary" tabindex="-1" role="button" aria-disabled="true">Create new client</a>
+        </div>
+    </div>
+
+    <!-- Login Prompt for Anonymous Users -->
+    <div sec:authorize="isAnonymous()" class="container d-flex h-100 align-items-center justify-content-center py-5">
+        <div class="d-flex justify-content-center">
+            <div class="text-center p-4">
+                <h1 class="mx-auto my-0 text-uppercase py-3">WebInsurance Family Program</h1>
+                <h6 class="text-danger mb-4">Abyste si mohli spravovat svá sjednaná pojištění, pojištěnců a jejich pojištění, je nutné se nejprve přihlásit!</h6>
+                <div class="mb-5">
+                    <a class="btn btn-primary" sec:authorize="isAnonymous()" th:href="@{/account/login}">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insurance Data Table for Authenticated Users -->
+    <div sec:authorize="isAuthenticated()" class="cd__main container-fluid">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Arranged insurance for children or dependents</h6>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="example" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th>Full Name</th>
+                            <th>Full Address</th>
+                            <th>Created by user</th>
+                            <th>Options</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- Loop through clients and display their details -->
+                        <tr th:each="client : ${clients}">
+                            <td>
+                                <a th:href="@{'/clients/' + ${client.clientId}}" th:text="${client.clientName + ' ' + client.clientSurname}"></a>
+                            </td>
+                            <td>
+                                <i th:text="${client.clientStreetAddress + ' ' + client.clientCity}"></i>
+                            </td>
+                            <td>
+                                <span th:text="${userRepository.findById(client.userId).get().getFirstName() + ' ' + userRepository.findById(client.userId).get().getLastName()}" class="text-danger"></span>
+                            </td>
+                            <td>
+                                <p>
+                                    <a th:href="@{'/clients/edit/' + ${client.clientId}}" class="btn btn-warning btn-sm" tabindex="-1" role="button" aria-disabled="true">Edit</a>
+                                    <a th:href="@{'/clients/delete/' + ${client.clientId}}" class="btn btn-danger btn-sm" tabindex="-1" role="button" aria-disabled="true">Delete</a>
+                                </p>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Footer -->
+<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+
+</body>
+</html>

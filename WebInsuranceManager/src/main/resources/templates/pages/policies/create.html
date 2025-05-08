@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}"></head>
+<body>
+<header th:replace="~{fragments/layout.html :: header}"></header>
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb">
+    <ol sec:authorize="isAuthenticated()" class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/clients}">My Portal</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/clients/{clientId}(clientId=${client.clientId})}">Client Profile</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Create policy</li>
+    </ol>
+</nav>
+
+<!-- Success and Error Messages -->
+<div class="justify-content-md-center py-3">
+    <div class="alert alert-success d-flex justify-content-center" role="alert" th:text="${success}" th:if="${success}"></div>
+    <div class="alert alert-success d-flex justify-content-center" role="alert" th:text="${error}" th:if="${error}"></div>
+</div>
+
+<!-- Form for Creating Policy -->
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col">
+            <div class="card card-registration my-4">
+                <div class="row g-0">
+                    <!-- Image (Left Column) -->
+                    <div class="col-xl-6 d-none d-xl-block">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
+                             alt="Sample photo" class="img-fluid"
+                             style="border-top-left-radius: .25rem; border-bottom-left-radius: .50rem;" />
+                    </div>
+
+                    <!-- Form Section (Right Column) -->
+                    <div class="col-xl-6">
+                        <div class="card-body p-md-5 text-black">
+                            <h3 class="mb-5 text-uppercase">Create a new policy</h3>
+
+                            <!-- Form to Create Policy -->
+                            <form th:action="@{/clients/{clientId}/policies/create(clientId=${client.clientId})}"
+                                  th:object="${policy}"
+                                  method="post"
+                                  class="row g-2 needs-validation"
+                                  novalidate>
+
+                                <!-- Policy Amount -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="policyAmount" class="control-label">Policy Amount</label>
+                                    <input type="number" class="form-control" id="policyAmount" th:field="*{policyAmount}" required min="1">
+                                    <small class="text-danger" th:if="${#fields.hasErrors('policyAmount')}" th:errors="*{policyAmount}"></small>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid insurance amount.
+                                    </div>
+                                </div>
+
+                                <!-- Insurance Subject -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="policyInsuranceSubject" class="control-label">Insurance Subject</label>
+                                    <input type="text" class="form-control" id="policyInsuranceSubject" th:field="*{policyInsuranceSubject}" maxlength="20" required>
+                                    <small class="text-danger" th:errors="*{policyInsuranceSubject}"></small>
+                                    <div class="invalid-feedback">
+                                        Please define the subject of the insurance policy.
+                                    </div>
+                                </div>
+
+                                <!-- Policy Start Date -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="policyStartDate" class="control-label">Policy Start Date</label>
+                                    <input type="date" class="form-control" id="policyStartDate" th:field="*{policyStartDate}" required>
+                                    <small class="text-danger" th:errors="*{policyStartDate}"></small>
+                                    <div class="invalid-feedback">
+                                        Please select a valid start date.
+                                    </div>
+                                </div>
+
+                                <!-- Policy End Date -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="policyEndDate" class="control-label">Policy End Date</label>
+                                    <input type="date" class="form-control" id="policyEndDate" th:field="*{policyEndDate}" required>
+                                    <small class="text-danger" th:errors="*{policyEndDate}"></small>
+                                    <div class="invalid-feedback">
+                                        Please select a valid end date.
+                                    </div>
+                                </div>
+
+                                <!-- Policy Type -->
+                                <div class="form-group col-md-12 mb-4">
+                                    <label for="policyType" class="control-label">Policy Type</label>
+                                    <select class="form-control" id="policyType" th:field="*{policyType}" required>
+                                        <option value="" disabled selected>Select policy type</option>
+                                        <option th:each="type : ${T(cz.itnetwork.webinsurance.models.dto.PolicyType).values()}"
+                                                th:value="${type}"
+                                                th:text="${type.policyName}"></option>
+                                    </select>
+                                    <small class="text-danger" th:errors="*{policyType}"></small>
+                                    <div class="invalid-feedback">
+                                        Please select a policy type.
+                                    </div>
+                                </div>
+
+                                <!-- Form Buttons -->
+                                <div class="form-group col-md-12">
+                                    <button type="submit" class="btn btn-primary btn-sm">Create Policy</button>
+                                    <a th:href="@{/clients/{clientId}(clientId=${client.clientId})}" class="btn btn-secondary btn-sm">Back to Client</a>
+                                </div>
+                            </form>
+                            <!-- End of Form -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Form Validation -->
+<script>
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            var forms = document.getElementsByClassName('needs-validation');
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+
+<!-- Footer -->
+<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+</body>
+</html>

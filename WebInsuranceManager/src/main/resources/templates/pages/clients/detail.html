@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}"></head>
+<body>
+<header th:replace="~{fragments/layout.html :: header}"></header>
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb">
+    <ol sec:authorize="isAuthenticated()" class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/clients}">My Portal</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Client Profile</li>
+    </ol>
+</nav>
+
+<!-- Success/Error Alerts -->
+<div class="container-fluid">
+    <div class="justify-content-md-center py-3">
+        <div class="alert alert-success d-flex justify-content-center" role="alert" th:text="${success}" th:if="${success}"></div>
+        <div class="alert alert-danger d-flex justify-content-center" role="alert" th:text="${error}" th:if="${error}"></div>
+    </div>
+
+    <!-- Client Information -->
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-sm-3">
+                <!-- Conditional Client Image Based on Gender -->
+                <img th:src="${client.clientGender.getClientGenderName() == 'Male' ? '/images/male.png' : '/images/female.png'}"
+                     class="w-75 p-3 img-fluid img-thumbnail img-sm" alt="Customer icon"/>
+            </div>
+            <div class="col-sm-9">
+                <div class="row">
+                    <div class="col-8 col-sm-6">
+                        <h1 th:text="${client.clientName + ' ' + client.clientSurname}"></h1>
+                        <h5 th:text="${client.clientStreetAddress}"></h5>
+                        <h5 th:text="${client.clientCity}"></h5>
+                        <h5 th:text="${client.clientZipCode}"></h5>
+                    </div>
+                    <div class="col-4 col-sm-6">
+                        <h5></br></br></h5>
+                        <h5 th:text="${client.clientEmail}"></h5>
+                        <h5 th:text="${client.formattedPhoneNumber}"></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insurance Policies Table -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Arranged insurance for children or dependents</h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="example" class="table table-striped table-bordered" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>Policy ID</th>
+                        <th>Amount</th>
+                        <th>Subject</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Type</th>
+                        <th>Options</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Loop through each policy -->
+                    <tr th:each="policy : ${policies}">
+                        <td th:text="${policy.policyId}"></td>
+                        <td th:text="${policy.policyAmount}"></td>
+                        <td th:text="${policy.policyInsuranceSubject}"></td>
+                        <td th:text="${policy.policyStartDate}"></td>
+                        <td th:text="${policy.policyEndDate}"></td>
+                        <td th:text="${policy.policyType}"></td>
+                        <td>
+                            <!-- Policy Action Buttons -->
+                            <p>
+                                <a th:href="@{'/clients/' + ${clientId} + '/policies/' + ${policy.policyId}}" class="btn btn-primary btn-sm" role="button">Detail Policy</a>
+                                <a th:href="@{'/clients/' + ${clientId} + '/policies/edit/' + ${policy.policyId}}" class="btn btn-warning btn-sm" role="button">Edit Policy</a>
+                                <a th:href="@{'/clients/' + ${clientId} + '/policies/delete/' + ${policy.policyId}}" class="btn btn-danger btn-sm" role="button">Delete Policy</a>
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Client Actions -->
+    <div class="d-flex justify-content-center">
+        <p>
+            <a th:href="@{/clients/{clientId}/policies/create(clientId=${client.clientId})}" class="btn btn-primary btn-sm" tabindex="-1" role="button" aria-disabled="true">Create new policy</a>
+            <a th:href="@{'/clients/edit/' + ${client.clientId}}" class="btn btn-warning btn-sm" tabindex="-1" role="button" aria-disabled="true">Edit Client</a>
+            <a th:href="@{'/clients/delete/' + ${client.clientId}}" class="btn btn-danger btn-sm" tabindex="-1" role="button" aria-disabled="true">Delete Client</a>
+        </p>
+    </div>
+</div>
+</div>
+
+<!-- Footer -->
+<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+</body>
+</html>

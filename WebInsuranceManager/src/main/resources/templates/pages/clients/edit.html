@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}"></head>
+<body>
+<header th:replace="~{fragments/layout.html :: header}"></header>
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb">
+    <ol sec:authorize="isAuthenticated()" class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/clients}">My Portal</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/clients/{clientId}(clientId=${clientId})}">Client Profile</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Edit Client Profile</li>
+    </ol>
+</nav>
+
+<!-- Edit Client Profile Form -->
+<div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col">
+            <div class="card card-registration my-4">
+                <div class="row g-0">
+                    <!-- Image on the left side -->
+                    <div class="col-xl-6 d-none d-xl-block">
+                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
+                             alt="Sample photo" class="img-fluid"
+                             style="border-top-left-radius: .25rem; border-bottom-left-radius: .50rem;" />
+                    </div>
+                    <!-- Form on the right side -->
+                    <div class="col-xl-6">
+                        <div class="card-body p-md-5 text-black">
+                            <h3 class="mb-5 text-uppercase">Edit client details</h3>
+                            <!-- Form for editing client details -->
+                            <form class="row g-3"
+                                  method="post"
+                                  th:action="@{'/clients/edit/' + ${clientId}}"
+                                  th:object="${clientDTO}">
+
+                                <!-- Name Field -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="clientName" class="control-label">Name</label>
+                                    <input id="clientName" th:field="*{clientName}" class="form-control"/>
+                                    <small class="text-danger" th:errors="*{clientName}"></small>
+                                </div>
+
+                                <!-- Surname Field -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="clientSurname" class="control-label">Surname</label>
+                                    <input id="clientSurname" th:field="*{clientSurname}" class="form-control"/>
+                                    <small class="text-danger" th:errors="*{clientSurname}"></small>
+                                </div>
+
+                                <!-- Email Address Field -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="clientEmail" class="control-label">Email Address</label>
+                                    <input id="clientEmail" th:field="*{clientEmail}" class="form-control"/>
+                                    <small class="text-danger" th:errors="*{clientEmail}"></small>
+                                </div>
+
+                                <!-- Phone Number Field -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="clientPhoneNumber" class="control-label">Phone Number</label>
+                                    <input id="clientPhoneNumber" th:field="*{clientPhoneNumber}" class="form-control"/>
+                                    <small class="text-danger" th:errors="*{clientPhoneNumber}"></small>
+                                </div>
+
+                                <!-- Street Address Field -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="clientStreetAddress" class="control-label">Street Address</label>
+                                    <input id="clientStreetAddress" th:field="*{clientStreetAddress}" class="form-control"/>
+                                    <small class="text-danger" th:errors="*{clientStreetAddress}"></small>
+                                </div>
+
+                                <!-- City Field -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="clientCity" class="control-label">City</label>
+                                    <input id="clientCity" th:field="*{clientCity}" class="form-control"/>
+                                    <small class="text-danger" th:errors="*{clientCity}"></small>
+                                </div>
+
+                                <!-- Zip Code Field -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label for="clientZipCode" class="control-label">Zip Code</label>
+                                    <input id="clientZipCode" th:field="*{clientZipCode}" class="form-control"/>
+                                    <small class="text-danger" th:errors="*{clientZipCode}"></small>
+                                </div>
+
+                                <!-- Gender Field -->
+                                <div class="form-group col-md-6 mb-4">
+                                    <label class="control-label">Gender</label><br>
+                                    <label class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" th:field="*{clientGender}" value="MALE">
+                                        <span class="form-check-label">Male</span>
+                                    </label>
+                                    <label class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" th:field="*{clientGender}" value="FEMALE">
+                                        <span class="form-check-label">Female</span>
+                                    </label>
+                                    <small class="text-danger" th:errors="*{clientGender}"></small>
+                                </div>
+
+                                <!-- Form Action Buttons -->
+                                <div class="form-group col-md-12 mt-4">
+                                    <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                    <button type="reset" value="Reset" class="btn btn-warning btn-sm ms-2">Reset</button>
+                                    <a th:href="@{/clients/{clientId}(clientId=${clientId})}" class="btn btn-success btn-sm ms-2">Back to Client</a>
+                                    <a th:href="@{/clients}" class="btn btn-secondary btn-sm ms-2">Back to Portal</a>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+    <!-- The head section is dynamically included from a layout fragment -->
+</head>
+<body>
+<header th:replace="~{fragments/layout.html :: header}">
+    <!-- The header is dynamically included from a layout fragment -->
+</header>
+
+<!-- Breadcrumb navigation to provide easy navigation for the user -->
+<nav aria-label="breadcrumb">
+    <ol sec:authorize="isAuthenticated()" class="breadcrumb">
+        <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/clients}">My Portal</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/clients/{clientId}(clientId=${clientId})}">Client Profile</a></li>
+        <li class="breadcrumb-item">
+            <a th:href="@{/clients/{clientId}/policies/{policyId}(clientId=${clientId}, policyId=${policy.policyId})}">
+                Client Policy Details
+            </a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Claim Details</li>
+    </ol>
+</nav>
+
+<!-- Main container for the claim details content -->
+<div class="container py-5">
+    <!-- Success and Error Messages -->
+    <div class="alert alert-success d-flex justify-content-center" role="alert" th:text="${success}" th:if="${success}"></div>
+    <div class="alert alert-danger d-flex justify-content-center" role="alert" th:text="${error}" th:if="${error}"></div>
+
+    <!-- Claim details header -->
+    <h1>Claim Details</h1>
+
+    <!-- Table showing claim details -->
+    <table class="table table-bordered">
+        <tr>
+            <th>Claim ID</th>
+            <td th:text="${claim.claimId}"></td>
+        </tr>
+        <tr>
+            <th>Claim Date</th>
+            <td th:text="${claim.claimDate}"></td>
+        </tr>
+        <tr>
+            <th>Claim Type</th>
+            <td th:text="${claim.claimType.name()}"></td>
+        </tr>
+        <tr>
+            <th>Claim Description</th>
+            <td th:text="${claim.claimDescription}"></td>
+        </tr>
+        <tr>
+            <th>Policy ID</th>
+            <td th:text="${policy.policyId}"></td>
+        </tr>
+    </table>
+
+    <!-- Button to navigate back to the policy details page -->
+    <div class="mt-3">
+        <a th:href="@{'/clients/' + ${clientId} + '/policies/' + ${policy.policyId}}" class="btn btn-primary btn-sm">
+            Back to Policy
+        </a>
+    </div>
+</div>
+
+<footer th:replace="~{fragments/layout.html :: footer}">
+    <!-- Footer is dynamically included from a layout fragment -->
+</footer>
+
+</body>
+</html>

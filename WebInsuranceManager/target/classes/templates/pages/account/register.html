@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+    <!-- Section to include the common head content like title, styles, and metadata -->
+</head>
+
+<body>
+<header th:replace="~{fragments/layout.html :: header}">
+    <!-- Section to include the header of the website, containing navigation and branding -->
+</header>
+
+<!-- Success alert message displayed if registration is successful -->
+<div class="alert alert-success d-flex justify-content-center" role="alert" th:text="${success}" th:if="${success}"></div>
+
+<!-- Error alert message displayed if there is an issue with registration -->
+<div class="alert alert-success d-flex justify-content-center" role="alert" th:text="${error}" th:if="${error}"></div>
+
+<!-- Main content container for the registration form -->
+<div class="container">
+    <div class="card o-hidden border-0 shadow-lg my-5">
+        <div class="card-body p-0">
+            <div class="row">
+                <!-- Image on the left side (visible only on larger screens) -->
+                <div class="col-lg-5 d-none d-lg-block bg-register-image">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
+                         alt="Sample photo" class="img-fluid"
+                         style="border-top-left-radius: .25rem; border-bottom-left-radius: .50rem;" />
+                </div>
+
+                <!-- Registration form area -->
+                <div class="col-lg-7">
+                    <div class="p-5">
+
+                        <!-- Section for the page title -->
+                        <div class="text-center">
+                            <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                        </div>
+
+                        <!-- Registration form for user account creation -->
+                        <form th:action="@{/account/register}" th:object="${userDTO}" method="post" class="user">
+
+                            <!-- Form group for first and last name inputs -->
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input id="firstName" name="firstName" th:field="*{firstName}" class="form-control form-control-user"
+                                           placeholder="First Name">
+                                    <small class="text-danger" th:errors="*{firstName}"></small>
+                                </div>
+                                <div class="col-sm-6">
+                                    <input id="lastName" name="firstName" th:field="*{lastName}" class="form-control form-control-user"
+                                           placeholder="Last Name">
+                                    <small class="text-danger" th:errors="*{lastName}"></small>
+                                </div>
+                            </div>
+
+                            <!-- Form group for email input -->
+                            <div class="form-group">
+                                <input input id="email" name="email" th:field="*{email}" class="form-control form-control-user"
+                                       placeholder="Email Address">
+                                <small class="text-danger" th:errors="*{email}"></small>
+                            </div>
+
+                            <!-- Form group for password and confirm password inputs -->
+                            <div class="form-group row">
+                                <div class="col-sm-6 mb-3 mb-sm-0">
+                                    <input id="password" name="password" type="password" th:field="*{password}"  class="form-control form-control-user"
+                                           placeholder="Password">
+                                </div>
+                                <div class="col-sm-6">
+                                    <input id="confirm-password" name="password" type="password" th:field="*{confirmPassword}"  class="form-control form-control-user"
+                                           placeholder="Repeat Password">
+                                    <small class="text-danger" th:errors="*{confirmPassword}"></small>
+                                </div>
+                            </div>
+
+                            <!-- Submit button to complete registration -->
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary btn-user btn-block">Register</button>
+                            </div>
+
+                            <!-- Social media registration buttons (currently disabled) -->
+                            <hr>
+                            <a href="index.html" class="btn btn-google btn-user btn-block disabled">
+                                <i class="fab fa-google fa-fw"></i> Register with Google
+                            </a>
+                            <a href="index.html" class="btn btn-facebook btn-user btn-block disabled">
+                                <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
+                            </a>
+                        </form>
+
+                        <!-- Additional links for account recovery and login -->
+                        <hr>
+                        <div class="text-center">
+                            <a class="small" th:href="@{/account/forgot-password}">Forgot Password?</a>
+                        </div>
+                        <div class="text-center">
+                            <a class="small" th:href="@{/account/login}">Already have an account? Login!</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer section for additional website information -->
+<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+</body>
+</html>

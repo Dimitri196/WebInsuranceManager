@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}"></head>
+
+<body>
+
+<header th:replace="~{fragments/layout.html :: header}"></header>
+
+<main>
+    <div class="row align-items-md-stretch justify-content-center my-5">
+
+        <!-- Logo Section -->
+        <div class="col-md-12 text-center mb-4">
+            <a th:href="@{/clients}">
+                <img th:src="@{/images/logoInsurance.png}" class="w-25 p-1 img-fluid" alt="Insurance Logo"/>
+            </a>
+        </div>
+
+        <!-- Create Account Section -->
+        <div class="col-md-4">
+            <div class="h-100 p-5 bg-light border rounded-3 shadow-sm">
+                <h2 class="text-primary">How can we help?</h2>
+                <p>Whether you are looking to insure your first car, protect your business and its assets, or support your family in times of need, we have an insurance policy to suit your needs.</p>
+                <button class="btn btn-outline-primary mt-3 w-100" sec:authorize="isAnonymous()" onclick="window.location.href='/account/register'">Create Account</button>
+            </div>
+        </div>
+
+        <!-- Manage Your Policy Section -->
+        <div class="col-md-4">
+            <div class="h-100 p-5 bg-light border rounded-3 shadow-sm">
+                <h2 class="text-primary">Manage Your Policy</h2>
+                <p>Renew or update your WebInsurance policy whenever you want with MyWebInsurance. We're here to provide a professional, quality service when you need it the most.</p>
+                <button class="btn btn-outline-primary mt-3 w-100" sec:authorize="isAnonymous()" onclick="window.location.href='/account/login'">Login</button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer Inclusion -->
+<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+
+</body>
+
+</html>

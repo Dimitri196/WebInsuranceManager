@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout.html :: head}">
+    <!-- Head section where common page settings like title and styles are included -->
+</head>
+
+<body>
+<header th:replace="~{fragments/layout.html :: header}">
+    <!-- Header section that includes navigation and branding for the website -->
+</header>
+
+<!-- Main container for page content -->
+<div class="container mt-5">
+
+    <!-- Success alert message, displayed if an action was successfully completed -->
+    <div class="alert alert-success alert-dismissible fade show" role="alert" th:text="${success}" th:if="${success}">
+        <strong>Success!</strong> Your action was successful.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Error alert message, displayed if there was an issue with login (invalid email or password) -->
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" th:if="${param.error}">
+        <strong>Error!</strong> Invalid email or password.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
+
+<!-- Main login form container -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+
+                        <!-- Image on the left side of the form (visible on larger screens) -->
+                        <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/img4.webp"
+                                 alt="Sample photo" class="img-fluid"
+                                 style="border-top-left-radius: .25rem; border-bottom-left-radius: .50rem;" />
+                        </div>
+
+                        <!-- Login form area -->
+                        <div class="col-lg-6">
+                            <div class="p-5">
+
+                                <!-- Welcome message for the user -->
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Welcome to WebInsurance!</h1>
+                                </div>
+
+                                <!-- Login form with fields for email and password -->
+                                <form th:action="@{/account/login}" method="post" class="user">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control form-control-user"
+                                               id="email" name="email" aria-describedby="emailHelp"
+                                               placeholder="Enter Email Address...">
+                                    </div>
+                                    <div class="form-group">
+                                        <input class="form-control form-control-user"
+                                               id="password" name="password" type="password" placeholder="Password">
+                                    </div>
+
+                                    <!-- "Remember Me" checkbox -->
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox small">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck">
+                                            <label class="custom-control-label" for="customCheck">Remember Me</label>
+                                        </div>
+                                    </div>
+
+                                    <!-- Login button -->
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
+                                    </div>
+                                    <hr>
+
+                                    <!-- Disabled social media login buttons -->
+                                    <a href="index.html" class="btn btn-google btn-user btn-block disabled">
+                                        <i class="fab fa-google fa-fw"></i> Login with Google
+                                    </a>
+                                    <a href="index.html" class="btn btn-facebook btn-user btn-block disabled">
+                                        <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+                                    </a>
+                                </form>
+
+                                <hr>
+
+                                <!-- Forgot password link -->
+                                <div class="text-center">
+                                    <a class="small" th:href="@{/account/forgot-password}">Forgot Password?</a>
+                                </div>
+
+                                <!-- Link to the registration page to create a new account -->
+                                <div class="text-center">
+                                    <a class="small" th:href="@{/account/register}">Create an Account!</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer section containing website information -->
+<footer th:replace="~{fragments/layout.html :: footer}"></footer>
+</body>
+
+</html>

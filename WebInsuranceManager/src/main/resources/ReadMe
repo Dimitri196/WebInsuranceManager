@@ -1,0 +1,17 @@
+!!!IMPORTANT!!!
+
+If localhost port of your SQL DB set to 3306,
+then you ought to change "application.properties" with re-setting the port from 3308 to 3306;
+
+***********************************************************************************************
+spring.datasource.url=jdbc:mariadb://localhost:3306/webinsurance?createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update
+
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+***********************************************************************************************
+
+!!!IMPORTANT!!!
